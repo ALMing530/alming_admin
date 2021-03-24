@@ -1,5 +1,7 @@
 # alming-admin
-
+alming-admin is the backstage of alming-frontend 
+Component library: element-plus
+Http library : axios
 ## Project setup
 ```
 npm install
