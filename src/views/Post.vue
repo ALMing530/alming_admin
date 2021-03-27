@@ -11,9 +11,10 @@
             class="upload-demo"
             action="http://localhost:53000/post"
             multiple
-            :limit="3"
+            :limit="10"
             :on-exceed="handleExceed"
             :before-upload="beforUpload"
+            :on-success="successUpload"
             :file-list="fileList"
             name="post"
             :data="title"
@@ -126,8 +127,13 @@ export default defineComponent({
     },
     handleDelete(item: Post){
       del("/post/"+item.id).then(res=>{
-        console.log(res)
+        if(res.status==200){
+          this.getPosts()
+        }
       })
+    },
+    successUpload(){
+      this.getPosts()
     }
   },
   mounted() {
