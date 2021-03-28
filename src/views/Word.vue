@@ -11,26 +11,25 @@
     </el-table-column>
     <el-table-column width="200" label="操作">
       <template #default="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-          >编辑</el-button
-        >
-        <el-button
-          size="mini"
-          type="danger"
-          @click="delWord(scope.row)"
+        <!-- <el-button size="mini" @click="editWord(scope.row)">编辑</el-button> -->
+        <el-button size="mini" type="danger" @click="delWord(scope.row)"
           >删除</el-button
         >
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog title="提示" v-model="addDialog" width="30%">
+  <el-dialog title="提示" v-model="addDialog" width="45%">
     <el-input size="small" v-model="word" @input="wordInput"></el-input>
     <div class="trans-container">
-      <el-divider v-if="trans==null?false:trans.length > 0">待选项目</el-divider>
+      <el-divider v-if="trans == null ? false : trans.length > 0"
+        >待选项目</el-divider
+      >
       <p class="trans" v-for="item in trans" :key="item" @click="select(item)">
         {{ item }}
       </p>
-      <el-divider v-if="selected==null?false:selected.length>0">已选项目</el-divider>
+      <el-divider v-if="selected == null ? false : selected.length > 0"
+        >已选项目</el-divider
+      >
       <p
         class="trans"
         v-for="item in selected"
@@ -59,7 +58,7 @@ export default defineComponent({
     return {
       addDialog: false,
       word: "",
-      trans: [],
+      trans: [] as string[],
       selected: [] as string[],
     };
   },
@@ -84,10 +83,12 @@ export default defineComponent({
       }, 800);
     },
     select(item: string) {
-      this.selected = ArrayUtil.pushUnique(this.selected, item);
+      ArrayUtil.pushUnique(this.selected, item);
+      ArrayUtil.deleteElement(this.trans, item);
     },
     unSelect(item: string) {
-      this.selected = ArrayUtil.deleteElement(this.selected, item);
+      ArrayUtil.deleteElement(this.selected, item);
+      ArrayUtil.pushUnique(this.trans, item);
     },
     confirm() {
       this.addDialog = false;
@@ -101,13 +102,13 @@ export default defineComponent({
         }
       });
     },
-    delWord(item:Word){
-      del("/word/"+item.id).then(res=>{
-        if (res.status==200){
-          this.getWords()
+    delWord(item: Word) {
+      del("/word/" + item.id).then((res) => {
+        if (res.status == 200) {
+          this.getWords();
         }
-      })
-    }
+      });
+    },
   },
   mounted() {
     this.getWords();
@@ -131,6 +132,9 @@ export default defineComponent({
   border-radius: 5px;
   text-align: left;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .trans:hover {
   background-color: rgb(240, 240, 240);

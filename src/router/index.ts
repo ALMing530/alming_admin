@@ -29,6 +29,17 @@ const routes: Array<RouteRecordRaw> = [
         component:()=>import('@/views/Post.vue')
       }
     ]
+  },
+  {
+    path:'/sys',
+    component:Main,
+    redirect:'/sys/index',
+    children:[
+      {
+        path:'index',
+        component:()=>import("@/views/sys/Sys.vue")
+      }
+    ]
   }
 ]
 

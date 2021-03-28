@@ -2,20 +2,15 @@
   <div>
     <div class="add-container">
       <el-row>
-        <el-col :span="4"
-          ><el-button type="primary" size="mini">直接编写</el-button></el-col
-        >
-        <el-col :span="20">
+        <el-col :span="22">
           <el-upload
             ref="upload"
             class="upload-demo"
             action="http://localhost:53000/post"
             multiple
             :limit="10"
-            :on-exceed="handleExceed"
             :before-upload="beforUpload"
             :on-success="successUpload"
-            :file-list="fileList"
             name="post"
             :data="title"
             :auto-upload="false"
@@ -41,14 +36,19 @@
               @click="upload"
               >确认上传</el-button
             >
-            <template #tip>
+            <!-- <template #tip>
               <div class="el-upload__tip">只能上传 Markdown 文件.</div>
-            </template>
+            </template> -->
           </el-upload>
+        </el-col>
+        <el-col type="flex" justify="center" :span="2">
+          <div class="edit-btn-container">
+            <el-button type="primary" size="small">直接编写</el-button>
+          </div>
         </el-col>
       </el-row>
     </div>
-    <el-table :data="posts" style="width: 100%">
+    <el-table :data="posts" style="width: 98%; margin: auto">
       <el-table-column prop="title" label="标题"> </el-table-column>
       <el-table-column prop="postType" label="文章类型" width="200">
         <template #default="scope">
@@ -60,16 +60,12 @@
       <el-table-column
         prop="createTime"
         label="创建时间"
-        :formatter="formatter"
         width="200"
       >
       </el-table-column>
       <el-table-column width="150" label="操作">
         <template #default="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.row)"
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >删除</el-button
           >
           <el-button
@@ -87,7 +83,7 @@
 import { defineComponent, ref } from "vue";
 import { Post } from "./types";
 import { get } from "@/util/request";
-import{del} from "@/util/request"
+import { del } from "@/util/request";
 import { ElMessage } from "element-plus";
 
 export default defineComponent({
@@ -125,16 +121,16 @@ export default defineComponent({
     upload() {
       (this.$refs.upload as HTMLFormElement).submit();
     },
-    handleDelete(item: Post){
-      del("/post/"+item.id).then(res=>{
-        if(res.status==200){
-          this.getPosts()
+    handleDelete(item: Post) {
+      del("/post/" + item.id).then((res) => {
+        if (res.status == 200) {
+          this.getPosts();
         }
-      })
+      });
     },
-    successUpload(){
-      this.getPosts()
-    }
+    successUpload() {
+      this.getPosts();
+    },
   },
   mounted() {
     this.getPosts();
@@ -145,5 +141,9 @@ export default defineComponent({
 .add-container {
   text-align: left;
   padding: 10px;
+}
+.edit-btn-container {
+  text-align: center;
+  /* padding-top: 18px; */
 }
 </style>
