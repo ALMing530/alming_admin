@@ -1,20 +1,24 @@
+export const unwarp = (obj: any) => obj && (obj.__v_raw || obj.valueOf() || obj)
 export const getOptions = (axis: any[],data: any[]) => {
     return {
-        title: {
-            text: '资源情况'
+        tooltip:{
+            trigger:"axis"
         },
-        tooltip: {},
-        legend: {
-            data: ['CPU占用率']
+        legend:{
+            data:["CPU占用率"]
         },
         xAxis: {
+            type: 'category',
             data: axis
         },
-        yAxis: {},
+        yAxis: {
+            type: 'value'
+        },
         series: [{
-            name: 'CPU占用率',
+            name:"CPU占用率",
+            data: data,
             type: 'line',
-            data: data
+            smooth: true
         }]
-    }
+    };
 }

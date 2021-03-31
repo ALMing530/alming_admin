@@ -1,36 +1,51 @@
 <template>
-  <div id="chart"></div>
+  <div id="cpu" class="chart"></div>
+  <div id="mem" class="chart"></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import * as echarts from "echarts";
-import { getOptions } from "./util";
+import { getOptions, unwarp} from "./util";
 import { createWebsocket } from "@/util/net";
 import { ECharts } from "echarts";
 export default defineComponent({
   data() {
     return {
-      chart: {} as ECharts,
+      cpuChart: {} as ECharts,
+      memChart: {} as ECharts,
+
       axis: [] as string[],
       cpuData: [] as number[],
+      memData:[] as number[],
       websocket: {} as WebSocket,
     };
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(
-        document.getElementById("chart") as HTMLElement
+      this.cpuChart = echarts.init(
+        document.getElementById("cpu") as HTMLElement
       );
-      const axis = [5, 20, 36, 10, 10, 20];
-      this.chart.setOption(getOptions(axis, [5, 20, 36, 10, 10, 20]));
+       this.memChart = echarts.init(
+        document.getElementById("mem") as HTMLElement
+      );
+      unwarp(this.cpuChart).setOption(getOptions([], []));
+      unwarp(this.memChart).setOption(getOptions([], []));
+
     },
     connectWebsocket() {
       this.websocket = createWebsocket("1");
       this.websocket.onmessage = (res) => {
         const usage = JSON.parse(res.data);
+        if (this.cpuData.length > 20) {
+          this.cpuData.shift();
+          this.memData.shift()
+          this.axis.shift()
+        }
         this.axis.push(usage.time);
-        this.cpuData.push(usage.cpu);
-        this.chart.setOption(getOptions(this.axis, this.cpuData));
+        this.cpuData.push(Math.round(usage.cpu * 100) / 100);
+        this.memData.push(Math.round(usage.mem * 100) / 100)
+        unwarp(this.cpuChart).setOption(getOptions(this.axis, this.cpuData));
+        unwarp(this.memChart).setOption(getOptions(this.axis, this.memData))
       };
     },
   },
@@ -45,8 +60,8 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-#chart {
+.chart {
   width: 100%;
-  height: 200px;
+  height: 300px;
 }
 </style>

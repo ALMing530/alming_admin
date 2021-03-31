@@ -15,11 +15,11 @@
       </template>
     </el-menu-item>
     <el-menu-item index="/post/index">
-      <i class="el-icon-cpu"></i>
+      <i class="el-icon-postcard"></i>
       <template #title>文章管理</template>
     </el-menu-item>
     <el-menu-item index="/sys/index">
-      <i class="el-icon-postcard"></i>
+      <i class="el-icon-cpu"></i>
       <template #title>性能监控</template>
     </el-menu-item>
   </el-menu>
