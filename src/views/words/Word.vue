@@ -1,51 +1,59 @@
 <template>
-  <div class="add-container">
-    <el-button type="primary" size="small" @click="addDialog = true"
-      >添加单词</el-button
-    >
-  </div>
-  <el-table :data="words" style="width: 100%">
-    <el-table-column prop="en" label="英文单词" width="240"> </el-table-column>
-    <el-table-column prop="cn" label="翻译"> </el-table-column>
-    <el-table-column prop="familiar" width="100" label="熟悉程度">
-    </el-table-column>
-    <el-table-column width="200" label="操作">
-      <template #default="scope">
-        <!-- <el-button size="mini" @click="editWord(scope.row)">编辑</el-button> -->
-        <el-button size="mini" type="danger" @click="delWord(scope.row)"
-          >删除</el-button
-        >
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-dialog title="提示" v-model="addDialog" width="45%">
-    <el-input size="small" v-model="word" @input="wordInput"></el-input>
-    <div class="trans-container">
-      <el-divider v-if="trans == null ? false : trans.length > 0"
-        >待选项目</el-divider
+  <div class="word">
+    <div class="add-container">
+      <el-button type="primary" size="small" @click="addDialog = true"
+        >添加单词</el-button
       >
-      <p class="trans" v-for="item in trans" :key="item" @click="select(item)">
-        {{ item }}
-      </p>
-      <el-divider v-if="selected == null ? false : selected.length > 0"
-        >已选项目</el-divider
-      >
-      <p
-        class="trans"
-        v-for="item in selected"
-        :key="item"
-        @click="unSelect(item)"
-      >
-        {{ item }}
-      </p>
     </div>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
-      </span>
-    </template>
-  </el-dialog>
+    <el-table :data="words" style="width: 100%">
+      <el-table-column prop="en" label="英文单词" width="240">
+      </el-table-column>
+      <el-table-column prop="cn" label="翻译"> </el-table-column>
+      <el-table-column prop="familiar" width="100" label="熟悉程度">
+      </el-table-column>
+      <el-table-column width="200" label="操作">
+        <template #default="scope">
+          <!-- <el-button size="mini" @click="editWord(scope.row)">编辑</el-button> -->
+          <el-button size="mini" type="danger" @click="delWord(scope.row)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog title="提示" v-model="addDialog" width="45%">
+      <el-input size="small" v-model="word" @input="wordInput"></el-input>
+      <div class="trans-container">
+        <el-divider v-if="trans == null ? false : trans.length > 0"
+          >待选项目</el-divider
+        >
+        <p
+          class="trans"
+          v-for="item in trans"
+          :key="item"
+          @click="select(item)"
+        >
+          {{ item }}
+        </p>
+        <el-divider v-if="selected == null ? false : selected.length > 0"
+          >已选项目</el-divider
+        >
+        <p
+          class="trans"
+          v-for="item in selected"
+          :key="item"
+          @click="unSelect(item)"
+        >
+          {{ item }}
+        </p>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";

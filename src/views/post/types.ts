@@ -1,15 +1,9 @@
-export interface Word{
-    id: number;
-    en: string;
-    cn: string;
-    familiar: number;
-  }
-  export interface Post {
+export interface Post {
     id: number;
     title: string;
     summary: string;
     oringin: string;
-    fomat: string;
+    format: string;
     postType: number;
     visits: number;
     createTime: string;

@@ -1,7 +1,7 @@
 <template>
   <div
+    class="nav"
     :class="{
-      nav: true,
       'side-nav-active': !isCollapse,
       'side-nav-inactive': isCollapse,
     }"
@@ -9,14 +9,14 @@
     <sidebar :isCollapse="isCollapse" />
   </div>
   <div
+    class="main"
     :class="{
-      main: true,
       'head-nav-active': !isCollapse,
       'head-nav-inactive': isCollapse,
     }"
   >
     <navbar />
-    <router-view></router-view>
+    <div class="main-body"><router-view></router-view></div>
   </div>
 </template>
 <script lang="ts">
@@ -48,19 +48,22 @@ export default defineComponent({
   min-height: 100%;
   text-align: left;
 }
-/* .main {
-  margin-left: 150px;
-} */
+.main {
+  height: 100%;
+}
+.main-body {
+  height: calc(100% - 50px);
+}
 .side-nav-active {
   width: 150px;
 }
 .side-nav-inactive {
   width: 64px;
 }
-.head-nav-active{
+.head-nav-active {
   margin-left: 150px;
 }
-.head-nav-inactive{
+.head-nav-inactive {
   margin-left: 64px;
 }
 .el-menu-item:hover {

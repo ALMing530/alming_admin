@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="list">
     <div class="add-container">
       <el-row>
         <el-col :span="22">
           <el-upload
             ref="upload"
             class="upload-demo"
-            action="http://localhost:53000/post"
+            action="http://localhost:53000/upload/post"
             multiple
             :limit="10"
             :before-upload="beforUpload"
@@ -32,7 +32,7 @@
             <el-button
               type="success"
               style="margin-left: 15px"
-              size="mini"
+              size="small"
               @click="upload"
               >确认上传</el-button
             >
@@ -43,7 +43,7 @@
         </el-col>
         <el-col type="flex" justify="center" :span="2">
           <div class="edit-btn-container">
-            <el-button type="primary" size="small">直接编写</el-button>
+            <el-button @click="edit" type="primary" size="small">直接编写</el-button>
           </div>
         </el-col>
       </el-row>
@@ -63,6 +63,12 @@
         width="200"
       >
       </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        label="修改时间"
+        width="200"
+      >
+      </el-table-column>
       <el-table-column width="150" label="操作">
         <template #default="scope">
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
@@ -71,13 +77,14 @@
           <el-button
             v-if="scope.row.postType == 1"
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="handleEdit(scope.row)"
             >编辑</el-button
           >
         </template>
       </el-table-column>
     </el-table>
   </div>
+  <div class="edit"></div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
@@ -91,6 +98,7 @@ export default defineComponent({
     const posts = ref<Post>();
     const getPosts = () => {
       get("posts").then((res) => {
+        console.log(res.data)
         posts.value = res.data;
       });
     };
@@ -128,9 +136,15 @@ export default defineComponent({
         }
       });
     },
+    handleEdit(item: Post){
+      this.$router.push("/post/editor/"+item.id)
+    },
     successUpload() {
       this.getPosts();
     },
+    edit(){
+      this.$router.push("/post/editor")
+    }
   },
   mounted() {
     this.getPosts();

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Main from '@/views/Main.vue'
+import Main from '@/layout/Main.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     children:[
       {
         path:"index",
-        component:()=> import('@/views/Word.vue')
+        component:()=> import('@/views/words/Word.vue')
       }
     ]
   },
@@ -26,7 +26,16 @@ const routes: Array<RouteRecordRaw> = [
     children:[
       {
         path:'index',
-        component:()=>import('@/views/Post.vue')
+        component:()=>import('@/views/post/Post.vue')
+      },
+      {
+        path:'editor',
+        component:()=>import('@/views/post/Editor.vue')
+      },
+      {
+        path:'editor/:postId',
+        component:()=>import('@/views/post/Editor.vue'),
+        props:true
       }
     ]
   },
